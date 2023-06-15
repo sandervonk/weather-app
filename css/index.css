@@ -1,0 +1,129 @@
+/* WEATHER APP | This file will contain our styles */
+
+/* 
+    CSS uses selectors to target the HTML elements we want to style.
+    - Selectors can be tags, classes, ids, or attributes.
+    - Selectors can be combined to target specific elements.
+    - Selectors can be nested to target elements within elements.
+    - Some common selectors and examples are:
+        selector                    example
+        ----------------------------------------------
+        tag                         p
+        .class                      .button-green
+        #id                         #main-title
+        [attribute=value]           [type="text"]
+        :pseudo-class               :hover
+        ::pseudo-element            ::before, ::after
+        :root                       N/A (Root of DOM)
+        *                           N/A (Wildcard)
+    - We can combine selectors to target specific, or multiple, elements, for the same style
+        purpose                syntax                example
+        -----------------------------------------------------------------------
+        apply to multiple      selector, selector    p, .button-green
+        child of parent        parent > child        .container > p
+        next sibling           sibling + sibling     h1 + p
+        all siblings           sibling ~ sibling     h1 ~ p
+
+    CSS also uses properties to style our HTML elements.
+    - These are the actual styles we want to apply to our HTML elements.
+    - They have values that are assigned to each property.
+    - Some common properties and example values are:
+        property                    value
+        -----------------------------------------------------------------
+
+        COLOR
+        -----------------------------------------------------------------
+        color                       red, #000, rgb(0,0,0)
+        background-color            red, #000, rgb(0,0,0)
+
+        TEXT
+        -----------------------------------------------------------------
+        font-size                   16px, 1rem, 1em
+        font-family                 Arial, Helvetica, sans-serif
+        font-weight                 bold, 400, 700
+        text-align                  left, center, right
+        text-decoration             underline, line-through, none
+
+        BORDERS & SHADOWS
+        -----------------------------------------------------------------
+        border                      1px solid red
+        border-color                red, #000, rgb(0,0,0)
+        border-radius               5px, 50%
+        box-shadow                  0 0 5px 0 rgba(0,0,0,0.5)
+
+        SIZING
+        -----------------------------------------------------------------
+        width                       100px, 100%, auto
+        height                      100px, 100%, auto
+        max-width                   100px, 100%, auto
+        max-height                  100px, 100%, auto
+        box-sizing                  border-box, content-box
+
+        LAYOUT
+        -----------------------------------------------------------------
+        margin                      10px, 10px 20px, 10px 20px 30px 40px
+        padding                     10px, 10px 20px, 10px 20px 30px 40px
+  
+    CSS is styled in the manner:
+    
+        selector {
+            property1: value1;
+            property2: var(--variable-name);
+        }
+
+    Here's an example of a CSS rule:
+        p {
+            color: red;
+            font-size: 16px;
+        }
+
+
+    CSS also has a concept of specificity, which determines which styles
+    will be applied to an element when multiple styles are applied to it.
+    - Specificity is determined by the number of selectors and the type of
+      selectors used.
+    - The more selectors, the more specific the style is.
+    - The more specific the style, the higher its priority.
+    - The higher the priority, the more likely it is to be applied.
+    - If two styles have the same specificity, the one that comes last in
+        the CSS file will be applied.
+    - We can use "!important" after a value to make it override all other
+        styles, but this should be used sparingly, and is not recommended as 
+        part of the best practices
+    - Here's an example of a CSS rule using "!important":
+        p {
+            color: red !important; <-- this takes priority, even if other styles are more specific
+            font-size: 16px;
+        }
+        body > div.main > p.label + span {
+            color: blue;
+        }
+
+    NOTE: the utils.css file already has some pre-written classes and 
+      selectors for common styles that we'll need for this project. The
+      theme.css file also has some pre-set theme colors, mostly used for
+      @svonk/util toasts/popups, but we can use them here too if we like.
+*/
+
+/* Fix user stylesheet so that the content fills the page */
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: var(--page-bg);
+}
+
+/* Import fonts for util.css and development */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Montserrat:wght@400;700&family=Roboto:wght@400;500;700&display=swap");
+
+/* ---------------------------------------------------------------------------- */
+/* -------------------------   [ START CODE BELOW ]   ------------------------- */
+/* ---------------------------------------------------------------------------- */
+
+/* Let's pick some colors for the background and elements to use later */
+:root {
+  --page-bg: lightblue;
+}
