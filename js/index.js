@@ -22,7 +22,7 @@
 
 // We'll primarily use the Toast and Popup classes from @svonk/utils, which
 // will allow us to display messages to the user. We can import them like so:
-import { Toast, SuccessToast, Popup } from "/svonk-util/util.js";
+import { Toast, SuccessToast, ErrorToast, Popup } from "/svonk-util/util.js";
 
 // jQuery comes with its own AJAX function and event handlers, which
 // we'll be using to make requests to the OpenWeatherMap API and to handle
@@ -31,8 +31,115 @@ import { Toast, SuccessToast, Popup } from "/svonk-util/util.js";
 // create a new toast when the page loads with jquery
 $(document).ready(function () {
   // create a new toast with the message "Hello World!" that shows for 1500ms
-  new SuccessToast("Hello World!", 1500); // SuccessToast is a child of Toast, with a pre-set icon
+  // SuccessToast is a child of Toast, with a pre-set icon
+  new SuccessToast("Hello World!", 1500);
+  // get the weather data once the page loads
+  getWeatherData();
 });
 
-// Our API key for OpenWeatherMap
-const API_KEY = "[ find it at https://home.openweathermap.org/api_keys ]";
+/* ---------------------------------------------------------------------------- */
+/* -------------------------   [ START CODE BELOW ]   ------------------------- */
+/* ---------------------------------------------------------------------------- */
+
+// API key for OpenWeatherMap
+const API_KEY = "[ find yours at https://home.openweathermap.org/api_keys ]";
+
+// STEP 1: Create a function that gets the weather data for a city
+
+/*
+  The strucutre of a function is:
+  function name (parameters) {
+    body
+  }
+*/
+
+
+function getWeatherData(
+  city, // the city to get the weather data for
+  callback, // the function to call when the data is received
+  type = "forecast", // defaults to "forecast", can be "weather"
+  units = "imperial" // optional parameter, if not provided it defaults to US units
+) {
+  // ensure that all needed parameters are present
+  if (!(city && callback)) {
+    new ErrorToast("Could not fetch data", "missing parameters");
+    return;
+    // ensure that they are of the correct type
+  } else if (typeof city !== "string" || typeof callback !== "function") {
+    new ErrorToast("Could not fetch data", "invalid parameters");
+    return;
+  }
+  /*
+   STEP 1: If the parameters are valid, let's start building our request link.
+   --------------------------------------------------------------------------------
+    The link to make a request to the OpenWeatherMap API is:
+    https://api.openweathermap.org/data/2.5/{type}?q={city}&appid={API_KEY}&units={units}
+  
+    We can use a template literal to build this link, which is a string, surrounded by 
+    backquotes (`) that allows us to insert variables into it. We'll use the syntax 
+    ${variable} to insert a variable.
+  
+    Try it out! 
+    
+    Edit the second part of the link, being added to requestUrl to fit the format
+  */
+  
+  let requestUrl = "https://api.openweathermap.org/data/2.5/"
+  
+  requestUrl += `[STEP 1: ADD YOUR TEMPLATE LITERAL STRING CONTENTS HERE]`;
+
+  /*
+    STEP 2: Making the request using jQuery's AJAX function
+    --------------------------------------------------------------------------------
+     This function ($.getJSON) takes an object as a parameter, with the properties:
+      - url: the url to make the request to
+      - success: the function to call when the request is successful
+      - error: the function to call when the request fails
+  
+     We'll be using arrow functions, which are a shorthand for writing functions
+  
+     The syntax for arrow functions is: (parameters) => { body }
+  
+     Try writing an error function that creates a new ErrorToast with the error code
+     that the error function receives as a parameter, remembering that the constructor
+     for ErrorToast is:
+     
+     new ErrorToast("warning message", "error code")
+  */
+
+  $.getJSON({
+    
+      url: requestUrl, // the url to make the request to (built in STEP 1)
+
+      error: null, // <-- [CHANGE THIS FOR STEP 2]
+      
+      success: (result) => { // The function to call when the request is successful
+        /*
+          STEP 3: Handling the data
+          --------------------------------------------------------------------------
+          Call the callback function with the data: a singular day if it's a weather 
+          request, or the array of days if it's a forecast request. We'll use: 
+          
+          condition ? true_condition : false_condition
+
+          This is called a ternary operator, shorthand for:
+
+            if (condition) {
+              return true_condition;
+            } else {
+              return false_condition;
+            }
+
+          Below, we'll use it to check if the type is "forecast", and if it is, we'll
+          return the list of days, otherwise we'll return the singular day.
+
+          Fill in the parameters for the callback function below! If the type is 
+          forecast (type === "forecast"), return the list of days (result.list),
+          otherwise return the singular day (result).
+        */
+
+        callback(/* [CHANGE THIS FOR STEP 3] */);
+      }
+    }
+  );
+}

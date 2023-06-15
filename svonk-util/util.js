@@ -38,9 +38,15 @@ class Toast {
   }
 }
 class ErrorToast extends Toast {
-  constructor(message, err, duration, action = "") {
+  constructor(message, err, duration = 2000, action = "") {
     message += ": " + err;
     super(message, "default", duration, "svonk-util/assets/error-icon.svg", action);
+    return console.error(
+      "%c💬 [UTIL]%c " + message,
+
+      "color: #a16d24; text-shadow: 3px 3px #e9927c; background: #faa488; font-weight: bold; font-size: 1.25em; padding: 5px 10px;",
+      "color: #eb5f65;  margin-left: 10px"
+    );
   }
 }
 class WarningToast extends Toast {
