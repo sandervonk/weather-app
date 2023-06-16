@@ -121,7 +121,6 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: var(--page-bg);
 }
 
 /* Import fonts for util.css and development */
@@ -133,5 +132,39 @@ body {
 
 /* Let's pick some colors for the background and elements to use later */
 :root {
-  --page-bg: lightblue;
+  --page-bg: radial-gradient(circle, #3ab7f7 0%, #2ba0db 45%, #0d72a6 100%); /* <-- for Step 4, you can change this if you like */
 }
+
+/* 
+   STEP 8: Styling the body
+   ----------------------------------------------------------------------------
+   
+   Let's make the page look a little nicer using the variable we just created 
+
+   Variables are used as properties in the format var(--variable-name)
+
+   Try using the variable to set the background color of the body.
+*/
+body {
+  background: /* [ CHANGE THIS FOR STEP 8 ] */;
+}
+
+/* 
+   STEP 9: Fixing what shows during loading
+   ----------------------------------------------------------------------------
+   
+   When the page is loading, we see the empty #forecast_cards_row. However, we 
+   want to instead have it say "Loading..." we can do this with the :empty 
+   pseudo-class. 
+   
+   Try adding a style for the #forecast_cards_row when it is empty with the 
+   property "content" set to "Loading...". (this property is a little special, 
+   only working with the :before and :after pseudo-elements, so we'll add it 
+   to the :before pseudo-element)
+
+   Change the blanks, including the ...s, to make it work.
+*/
+
+#forecast_cards_row:/* ... */::/* ... */ {
+  /* [ ADD THE PROPERTY FROM STEP 9 ] */
+}/* 

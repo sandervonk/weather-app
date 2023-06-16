@@ -44,14 +44,20 @@ class ErrorToast extends Toast {
     return console.error(
       "%c💬 [UTIL]%c " + message,
 
-      "color: #a16d24; text-shadow: 3px 3px #e9927c; background: #faa488; font-weight: bold; font-size: 1.25em; padding: 5px 10px;",
-      "color: #eb5f65;  margin-left: 10px"
+      "color: #a16d24; text-shadow: 3px 3px #e9927c; background: #faa488; font-weight: bold; font-size: 1.25em; padding: 5px 10px",
+      "color: #faa488;  margin-left: 10px"
     );
   }
 }
 class WarningToast extends Toast {
   constructor(message, duration, action = "") {
     super(message, "default", duration, "svonk-util/assets/warning-icon.svg", action);
+  }
+}
+
+class InfoToast extends Toast {
+  constructor(message, duration, action = "") {
+    super(message, "default", duration, "svonk-util/assets/info-icon.svg", action);
   }
 }
 class SuccessToast extends Toast {
@@ -174,6 +180,7 @@ export {
   Toast,
   ErrorToast,
   WarningToast,
+  InfoToast,
   SuccessToast,
   cleanError,
   placeholderToast,

@@ -42,7 +42,7 @@
   will allow us to display messages to the user. We can import them like so: 
 */
 
-import { Toast, SuccessToast, ErrorToast, Popup } from "/svonk-util/util.js";
+import { InfoToast, SuccessToast, ErrorToast } from "/svonk-util/util.js";
 
 /* 
   FUNCTION STRUCTURE
@@ -84,6 +84,15 @@ $(document).ready(function () {
      to the console. We'll use the default parameters for type and units
   */
   getWeatherData(/* [CHANGE THIS FOR STEP 4] */);
+
+  /*
+     STEP 10: Let's run our new functions!
+     ----------------------------------------------------------------------------
+     You can delete the line from STEP 4, and uncomment the line below, adding
+     the city as "San Francisco", and a callback to addForecastCards with the
+     new weather data as a parameter!
+  */
+  // getWeatherData( [CHANGE THIS FOR STEP 10] ); // <-- [ UNCOMMENT FOR STEP 10 ]
 });
 
 /* ---------------------------------------------------------------------------- */
@@ -188,6 +197,125 @@ function getWeatherData(
 
 
 /*
-  STEP 5: Create a function that displays the weather data for a city
+  STEP 6: Tweak a function that creates a weather data card from the data
   ----------------------------------------------------------------------------------
+  This function takes a singular day of weather data as a parameter, and creates
+  an HTML (jQuery) element that displays the data in a card, as well as does another
+  action when clicked. 
 */
+
+function makePreviewHTML(day_raw) {
+    // ensure that all needed parameters are present
+  if (!day_raw) {
+    new ErrorToast("Could not create preview", "missing data");
+    return;
+  }
+  // ensure that they are of the correct type
+  else if (typeof day_raw !== "object" || !(day_raw.main && day_raw.weather && day_raw.dt)) {
+    new ErrorToast("Could not create preview", "invalid data");
+    return;
+  }
+  // set options for refomatting the time
+  const options = {
+    month: '2-digit',
+    day: '2-digit',
+    hour: 'numeric',
+    hour12: true
+  }
+  // reformat the data for easier access
+  let day = {
+    date: (new Date(day_raw.dt * 1000)).toLocaleString("en-US", options),
+    //       ^ formats the date to MM/DD, HH AM/PM
+    temp: Math.round(day_raw.main.temp),
+    feels_like: day_raw.main.feels_like,
+    high: day_raw.main.temp_max,
+    low: day_raw.main.temp_min,
+    weather: day_raw.weather[0],
+  }
+  // reformat the date to HH AM/PM MM/DD
+  day.date = day.date.split(", ").reverse().join(" ")
+
+  // -------------------------------------------------------------------------------
+  //                     [ FOR STEP 6, EDIT CONTENT BELOW ]
+  return $(`
+    <div class="forecast_card" title="${new Date(day_raw.dt).toString()}">
+      <div class="forecast_card__date">${day.date}</div>
+      <div class="forecast_card__weather" title="${day.weather.description}>
+        ${day.weather.main}
+      </div>
+      <div class="forecast_card__temp">${day.temp}°</div>
+    </div>
+    `)
+  // add a click event listener to the card to show some more info
+    .click(() => {
+      new InfoToast(
+        `Feels like ${day.feels_like}° with a high of ${day.high}° and low of ${day.low}°`,
+        2000
+      )
+    })
+  //                            [ END OF STEP 6 ]
+  // -------------------------------------------------------------------------------
+}
+
+
+/*
+  STEP 7: Create and add our forecast cards to the page
+  ----------------------------------------------------------------------------------
+  Now that we have a function that creates a card, let's use it to create a card for
+  each data point in the forecast, and add it to forecast card row!
+*/
+function addForecastCards(forecast) {
+  // ensure that all needed parameters are present
+  if (!forecast) {
+    new ErrorToast("Could not add forecast cards", "missing data");
+    return;
+  }
+  // ensure that they are of the correct type
+  else if (typeof forecast !== "object") {
+    new ErrorToast("Could not add forecast cards", "invalid data");
+    return;
+  }
+  // clear the forecast card row
+  $(".forecast_card_row").html("");
+    /*
+    STEP 7: Create and display forecast cards
+    -----------------------------------------------------------------------------
+    We'll be using the makePreviewHTML function we created in STEP 6 when looping
+    through each day in the forecast, adding the result to the forecast card row.
+
+    Try it out! use the makePreviewHTML function to create a card for the day, 
+    then append it to the #forecast_card_row element using jQuery's append 
+    function, which takes an HTML element as a parameter and adds the jQuery 
+    element (in our case the output of makePreviewHTML(day) its called on as a 
+    child of the parameter element.
+
+    Ex: $("<p>hi</p>").append($(document.body)) will add a paragraph element with
+    the text "hi" to the body of the page.
+
+  */
+  forecast.forEach((day) => {
+
+    /* [ WRITE YOUR CODE FOR STEP 7 HERE] */
+
+  });
+}
+
+
+
+
+
+
+
+
+/*
+  DEBUG: Enable some functions outside this scope
+  --------------------------------------------------------------------------------
+  Since this is a module (nessesary to use imports), we can't call its functions
+  outside of when it's imported. To get around this for testing, we'll add them to 
+  the window scope (the global scope) so that we can call them from the console!
+
+  No need to change anything below, feel free to remove once you're done testing!
+*/
+window.getWeatherData = getWeatherData;
+window.makePreviewHTML = makePreviewHTML;
+window.addForecastCards = addForecastCards;
