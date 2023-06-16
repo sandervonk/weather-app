@@ -157,7 +157,7 @@ body {
    want to instead have it say "Loading..." we can do this with the :empty 
    pseudo-class. 
    
-   Try adding a style for the #forecast_cards_row when it is empty with the 
+   Try adding a style for the #forecast_card_row when it is empty with the 
    property "content" set to "Loading...". (this property is a little special, 
    only working with the :before and :after pseudo-elements, so we'll add it 
    to the :before pseudo-element)
@@ -165,6 +165,130 @@ body {
    Change the blanks, including the ...s, to make it work.
 */
 
-#forecast_cards_row:/* ... */::/* ... */ {
+#forecast_card_row:/* ... */::/* ... */ {
   /* [ ADD THE PROPERTY FROM STEP 9 ] */
 }/* 
+
+
+
+
+
+
+
+/* ------------------------------------------------------------------------------ */
+/* --------------------------  [ DO NOT CHANGE BELOW ]  ------------------------- */
+/* ------------------------------------------------------------------------------ */
+/* -----------------  You can mess with it once you're done :) ------------------ */
+/* ------------------------------------------------------------------------------ */
+
+/* main page formatting */
+main, #forecast {
+    height: 100%
+}
+#forecast {
+    display: flex;
+    flex-flow: column;
+}
+
+/* overflow scroll for cards */
+#forecast_card_row {
+    overflow-x: auto;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    padding: 20px;
+}
+
+#forecast_card_row > .forecast_card {
+    /* sizing */
+    margin: 10px;
+    padding: 10px;
+    padding-bottom: calc(1.5rem + 30px);
+    width: 200px;
+    height: 200px;
+    flex-shrink: 0;
+    flex-grow: 0;
+
+    /* general styles */
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+
+    /* container properties */
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+
+    /* background - glass effect */
+    background: rgba(156, 222, 255, 0.12);
+    border: 1px solid rgba(156, 222, 255, 0.29);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+
+    /* transition */
+    transition: background-color 0.2s ease-out, border-color 0.2s ease-out, transform 0.3s ease-out;
+}
+
+#forecast_card_row > .forecast_card:hover {
+    /* bluer glassmorphism */
+    background: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.26);
+
+    /* transform */
+    transform: scale(1.05);
+}
+
+#forecast_card_row > .forecast_card > .forecast_card__icon {
+    /* sizing */
+    width: 100%;
+    object-fit: contain;
+    aspect-ratio: 3 / 2;
+
+    /* events */
+    pointer-events: none;
+    user-select: none;
+    
+    /* zoom effect */
+    transition: transform 0.3s ease-out;
+    transform: scale(0.9);
+}
+
+#forecast_card_row > .forecast_card:hover > .forecast_card__icon {
+    transform: scale(1.0) rotate(3deg);
+}
+
+#forecast_card_row > .forecast_card p {
+    /* layout */
+    margin: 0;
+    padding: 0;
+
+    /* events */
+    pointer-events: none;
+    user-select: none;
+}
+#forecast_card_row > .forecast_card p.forecast_card__temp {
+    /* glassmorphism effect */
+    background: rgba(156, 222, 255, 0.12);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(6.6px);
+    -webkit-backdrop-filter: blur(6.6px);
+    border: 1px solid rgba(156, 222, 255, 0.29);
+    
+    /* text formatting */
+    color: white;
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+    font-weight: 700;
+
+    /* size and position */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin: 10px;
+    padding: 6px 10px ;
+    border-radius: 7px;
+    
+}

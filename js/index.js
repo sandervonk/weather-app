@@ -102,12 +102,25 @@ $(document).ready(function () {
 
 // API key for OpenWeatherMap
 const API_KEY = "[ find yours at https://home.openweathermap.org/api_keys ]";
+// default units for the weather data
+const default_unit = "standard";
+// function to get the unit symbol for a unit
+const getUnitSymbol = (unit) => {
+  switch (unit) {
+    case "imperial":
+      return "${getUnitSymbol(default_unit)}F";
+    case "metric":
+      return "${getUnitSymbol(default_unit)}C";
+    default:
+      return " K";
+  }
+}
 
 function getWeatherData(
   city, // the city to get the weather data for
   callback, // the function to call when the data is received
   type = "forecast", // defaults to "forecast", can be "weather"
-  units = "imperial" // optional parameter, if not provided it defaults to US units
+  units = default_unit // optional parameter, if not provided it defaults to US units
 ) {
   // ensure that all needed parameters are present
   if (!(city && callback)) {
@@ -131,6 +144,13 @@ function getWeatherData(
     Try it out! 
     
     Edit the second part of the link, being added to requestUrl to fit the format
+    
+    IMPORTANT: Don't forget to use the result of encodeURIComponent on the city, 
+    to ensure that the city name is properly formatted for the url! Spaces and 
+    special characters could cause issues, so we'll use encodeURIComponent to 
+    ensure that the city name is properly formatted for the url.
+
+    Ex: encodeURIComponent("San Francisco") returns "San%20Francisco"
   */
   
   let requestUrl = "https://api.openweathermap.org/data/2.5/"
@@ -231,6 +251,7 @@ function makePreviewHTML(day_raw) {
     high: day_raw.main.temp_max,
     low: day_raw.main.temp_min,
     weather: day_raw.weather[0],
+    icon: day_raw.weather[0].icon.replace("d", "").replace("n", "") + ".png"
   }
   // reformat the date to HH AM/PM MM/DD
   day.date = day.date.split(", ").reverse().join(" ")
@@ -238,19 +259,18 @@ function makePreviewHTML(day_raw) {
   // -------------------------------------------------------------------------------
   //                     [ FOR STEP 6, EDIT CONTENT BELOW ]
   return $(`
-    <div class="forecast_card" title="${new Date(day_raw.dt).toString()}">
-      <div class="forecast_card__date">${day.date}</div>
-      <div class="forecast_card__weather" title="${day.weather.description}>
-        ${day.weather.main}
+    <div class="forecast_card" weather=${day.weather.main.toLowerCase().replace(" ", "")}>
+      <img class="forecast_card__icon" alt="${day.weather.description}" src="img/weather/${day.icon}" />
+      <div class="forecast_card_text">${day.date}
+        <p class="forecast_card__temp">${day.temp}${getUnitSymbol(default_unit)}</p>
       </div>
-      <div class="forecast_card__temp">${day.temp}°</div>
     </div>
     `)
   // add a click event listener to the card to show some more info
     .click(() => {
       new InfoToast(
-        `Feels like ${day.feels_like}° with a high of ${day.high}° and low of ${day.low}°`,
-        2000
+        `Feels like ${day.feels_like}${getUnitSymbol(default_unit)} with a high of ${day.high}${getUnitSymbol(default_unit)} and low of ${day.low}${getUnitSymbol(default_unit)}`,
+        4000
       )
     })
   //                            [ END OF STEP 6 ]
