@@ -1,58 +1,98 @@
-// WEATHER APP | This file will contain our Javascript Code
+/* ------------------------------------------------------------------------------ */
+/* - © 2023 Sander Vonk | Requires permission for replication or commercial use - */
+/* ------------------------------------------------------------------------------ */
 
-// Resources:
-//   You can find your API key here: https://home.openweathermap.org/api_keys
-//   README for @svonk/utils (though this is an adapted version for
-//     a non-node environment): https://code.svonk.me/util/#readme
-//   The project slides: https://mvhacks-slides.svonk.me
-//   The project code: https://mvhacks-code.svonk.me
+/* ------------------------------------------------------------------------------ */
+/* -------------- WEATHER APP WORKSHOP | MVHacks 2023 | 06/15/2023 -------------- */
+/* ------------------------------------------------------------------------------ */
+/* ----------------- This file will contain our Javascript Code ----------------- */
+/* ------------------------------------------------------------------------------ */
 
-// We'll be using jQuery for this project, which is a library that contains
-// a lot of useful functions for Javascript. We'll primarily be using the
-// $("selector") syntax, which serves similarly to document.querySelector
+/* 
+  RESOURCES
+  ----------------------------------------------------------------------------
+    You can find your API key here: https://home.openweathermap.org/api_keys
+    README for @svonk/utils (though this is an adapted version for
+      a non-node environment): https://code.svonk.me/util/#readme
+    The project slides: https://mvhacks-slides.svonk.me
+    The project code: https://mvhacks-code.svonk.me
+*/
 
-// We'll also be using @svonk/utils, which is a library I wrote to make
-// javascript web development more streamlined. It's not necessary, but
-// it allows us to focus on writing this app instead of writing boilerplate
-// code. Since this is a non-node environment, I've adapted it to work.
+/* 
+  GETTING TO KNOW THE TECHNOLOGIES
+  ----------------------------------------------------------------------------
+  We'll be using jQuery for this project, which is a library that contains
+  a lot of useful functions for Javascript. We'll primarily be using the
+  $("selector") syntax, which serves similarly to document.querySelector
+  
+  jQuery also comes with its own AJAX function and event handlers, which
+  we'll be using to make requests to the OpenWeatherMap API and to handle
+  interactions with the page. Here's an example:
+  
+  We'll also be using @svonk/utils, which is a library I wrote to make
+  javascript web development more streamlined. It's not necessary, but
+  it allows us to focus on writing this app instead of writing boilerplate
+  code. Since this is a non-node environment, I've adapted it to work.
 
-// Thankfully, we're able to import the modified version as a module, which
-// will allow us to import specific functions from it. We'll be using the
-// syntax import { function } from "module", which is a new feature in JS.
+  Thankfully, we're able to import the modified version as a module, which
+  will allow us to import specific functions from it. We'll be using the
+  syntax import { function } from "module", which is a new feature in JS.
 
-// We'll primarily use the Toast and Popup classes from @svonk/utils, which
-// will allow us to display messages to the user. We can import them like so:
+  We'll primarily use the Toast and Popup classes from @svonk/utils, which
+  will allow us to display messages to the user. We can import them like so: 
+*/
+
 import { Toast, SuccessToast, ErrorToast, Popup } from "/svonk-util/util.js";
 
-// jQuery comes with its own AJAX function and event handlers, which
-// we'll be using to make requests to the OpenWeatherMap API and to handle
-// interactions with the page. Here's an example:
+/* 
+  FUNCTION STRUCTURE
+  ----------------------------------------------------------------------------
+  We'll be using a lot of functions in this project, so let's go over how to
+  write them.
 
-// create a new toast when the page loads with jquery
+  The structure of a function is:
+
+  function name (parameters) {
+    body
+  }
+
+  The parameters are the variables that the function takes as input, and the
+  body is the code that the function runs. We can call a function by writing
+  its name, followed by parentheses, with the parameters inside the 
+  parentheses, like this:
+
+  name(parameters)
+*/
+
+
+/*
+  PAGE LOAD ACTIONS
+  ----------------------------------------------------------------------------
+  Create a new toast with the message "Hello World!" that shows for 1500ms
+  - SuccessToast is a child of Toast, with a pre-set icon
+
+  Run the getWeatherData function with the parameters "San Francisco", and
+  a callback function to log the data to the console (for testing purposes)
+*/
+
 $(document).ready(function () {
-  // create a new toast with the message "Hello World!" that shows for 1500ms
-  // SuccessToast is a child of Toast, with a pre-set icon
-  new SuccessToast("Hello World!", 1500);
-  // get the weather data once the page loads
-  getWeatherData();
+  new SuccessToast("Hello World!", 1500); // <-- you can remove this
+  /*
+     STEP 4: Let's try out our getWeatherData function!
+     ----------------------------------------------------------------------------
+     We'll be using the city "San Francisco" and a callback that prints the data
+     to the console. We'll use the default parameters for type and units
+  */
+  getWeatherData(/* [CHANGE THIS FOR STEP 4] */);
 });
 
 /* ---------------------------------------------------------------------------- */
 /* -------------------------   [ START CODE BELOW ]   ------------------------- */
 /* ---------------------------------------------------------------------------- */
 
+
 // API key for OpenWeatherMap
 const API_KEY = "[ find yours at https://home.openweathermap.org/api_keys ]";
-
-// STEP 1: Create a function that gets the weather data for a city
-
-/*
-  The strucutre of a function is:
-  function name (parameters) {
-    body
-  }
-*/
-
 
 function getWeatherData(
   city, // the city to get the weather data for
@@ -143,3 +183,11 @@ function getWeatherData(
     }
   );
 }
+
+
+
+
+/*
+  STEP 5: Create a function that displays the weather data for a city
+  ----------------------------------------------------------------------------------
+*/
