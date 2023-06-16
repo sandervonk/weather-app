@@ -171,10 +171,6 @@ body {
 
 
 
-
-
-
-
 /* ------------------------------------------------------------------------------ */
 /* --------------------------  [ DO NOT CHANGE BELOW ]  ------------------------- */
 /* ------------------------------------------------------------------------------ */
@@ -196,22 +192,27 @@ main, #forecast {
     align-items: center;
     justify-content: flex-start;
     position: relative;
-    padding: 20px;
+    padding: 10px;
 }
 
 #forecast_card_row > .forecast_card {
     /* sizing */
     margin: 10px;
     padding: 10px;
-    padding-bottom: calc(1.5rem + 30px);
+    padding-bottom: calc(1.5rem + 35px);
     width: 200px;
     height: 200px;
     flex-shrink: 0;
     flex-grow: 0;
 
+    /* text */
+    color: white;
+    font-weight: 600;
+    font-family: "Montserrat", Roboto, sans-serif;
+    text-align: center;
+
     /* general styles */
     border-radius: 10px;
-    text-align: center;
     cursor: pointer;
 
     /* container properties */
@@ -246,6 +247,7 @@ main, #forecast {
     width: 100%;
     object-fit: contain;
     aspect-ratio: 3 / 2;
+    margin-bottom: -15px;
 
     /* events */
     pointer-events: none;

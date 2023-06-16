@@ -160,20 +160,29 @@ function getWeatherData(
   /*
     STEP 2: Making the request using jQuery's AJAX function
     --------------------------------------------------------------------------------
-     This function ($.getJSON) takes an object as a parameter, with the properties:
-      - url: the url to make the request to
-      - success: the function to call when the request is successful
-      - error: the function to call when the request fails
-  
-     We'll be using arrow functions, which are a shorthand for writing functions
-  
-     The syntax for arrow functions is: (parameters) => { body }
-  
-     Try writing an error function that creates a new ErrorToast with the error code
-     that the error function receives as a parameter, remembering that the constructor
-     for ErrorToast is:
-     
-     new ErrorToast("warning message", "error code")
+    This function ($.getJSON) takes an object as a parameter, with the properties:
+    - url: the url to make the request to
+    - success: the function to call when the request is successful
+    - error: the function to call when the request fails
+
+    We'll be using arrow functions, which are a shorthand for writing functions
+
+    The syntax for arrow functions is: (parameters) => { body }
+
+    Try writing an error function that creates a new ErrorToast with the error code
+    that the error function receives as a parameter, remembering that the constructor
+    for ErrorToast is:
+    
+    new ErrorToast("warning message", "error code")
+
+    In this case, the error code will equal to:
+
+    err?.responseJSON?.message || err?.status || err || "unknown error"
+
+    Which just means that if err.responseJSON.message is defined, use that, otherwise
+    use err.status, otherwise use err, otherwise use "unknown error." The ?. syntax is
+    called optional chaining, and is a shorthand for checking if a property is defined
+    before accessing it, which allows us to avoid errors if the property is undefined.
   */
 
   $.getJSON({
@@ -222,6 +231,28 @@ function getWeatherData(
   This function takes a singular day of weather data as a parameter, and creates
   an HTML (jQuery) element that displays the data in a card, as well as does another
   action when clicked. 
+
+  If you like, you may edit the content of the card, and what happens when it's
+  clicked. You can also add more elements to the card, or change the layout of the
+  card. However, first you must:
+
+  Fix the icon link in the function to display the correct icon for the weather;
+  right now it's using the icon code provided by the API, which is a string of two
+  numbers and then either "d" or "n". You can find the icons in the img/weather, 
+  though they're already all set up for you, so you don't need to change them.
+
+  We need to change the icon code to the icon number only (replace the "d" or "n" with
+  ""), and then add ".svg" or ".png" to the end of it. You can do this by using the 
+  .replace(find_string, replace_with) function, which takes two parameters: the string
+  to find, and the string to replace it with. You can also use the .slice(start, end)
+  function, which takes two parameters: the index to start at, and the index to end at.
+  (the number starts at index 0 and ends at 2)
+
+  NOTE that both .png and .svg files are provided for each icon, so you can use either,
+  but you must add the file extension to the end of the icon code. Just pick whichever
+  you like. PNG files are bitmaps, so have pixels, while SVG files are vector images,
+  so they scale better, but are more complex, and may not always work as intended
+  
 */
 
 function makePreviewHTML(day_raw) {
@@ -251,13 +282,13 @@ function makePreviewHTML(day_raw) {
     high: day_raw.main.temp_max,
     low: day_raw.main.temp_min,
     weather: day_raw.weather[0],
-    icon: day_raw.weather[0].icon.replace("d", "").replace("n", "") + ".png"
+    icon: day_raw.weather[0].icon // <-- [ CHANGE THIS FOR STEP 6 ]
   }
   // reformat the date to HH AM/PM MM/DD
   day.date = day.date.split(", ").reverse().join(" ")
 
   // -------------------------------------------------------------------------------
-  //                     [ FOR STEP 6, EDIT CONTENT BELOW ]
+  //                   [ FOR STEP 6, YOU MAY EDIT THE CONTENT BELOW ]
   return $(`
     <div class="forecast_card" weather=${day.weather.main.toLowerCase().replace(" ", "")}>
       <img class="forecast_card__icon" alt="${day.weather.description}" src="img/weather/${day.icon}" />
@@ -320,6 +351,39 @@ function addForecastCards(forecast) {
   });
 }
 
+/*
+  STEP 11: Nicer scroll
+  ----------------------------------------------------------------------------------
+  Let's make it so that when the user scrolls using the mouse wheel on 
+  "#forecast_card_row", it scrolls it horizontally instead of vertically, since
+  there's horizontal overflow on the row, but some devices might only have a up and
+  down scroll function
+
+  we'll use the wheel event, which is fired when the user scrolls using the mouse
+  wheel, and the scrollLeft function, which sets the horizontal scroll position of 
+  an element to the value passed to it.
+
+  Right now, our delta (change in scroll position) is null, so the scrollLeft just 
+  stays the same.
+
+  Set the event that should trigger this listener ("scroll") to get started.
+
+  Then change the function to use the e.originalEvent.deltaY property, which is 
+  the change in scroll position in the y direction (vertical). This will make it so 
+  that the scrollLeft changes by the same amount as the scroll input in the y 
+  direction, enabling us to scroll horizontally using the mouse wheel!
+*/
+
+$("#forecast_card_row").on("[ CHANGE THIS FOR STEP 11 ]", (e) => {
+
+  // prevent the default scroll action
+  e.preventDefault();
+  
+  let delta = 0; // <-- [ CHANGE THIS FOR STEP 11 ]
+
+  // scroll the forecast card row horizontally
+  $("#forecast_card_row").scrollLeft($("#forecast_card_row").scrollLeft() + delta);
+});
 
 
 
