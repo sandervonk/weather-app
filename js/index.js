@@ -166,7 +166,7 @@ function getWeatherData(
   
   let requestUrl = "https://api.openweathermap.org/data/2.5/"
   
-  requestUrl += `[STEP 1: ADD YOUR TEMPLATE LITERAL STRING CONTENTS HERE]`;
+  requestUrl += `${type}?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=${units}`;
 
   /*
     STEP 2: Making the request using jQuery's AJAX function
