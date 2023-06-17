@@ -167,7 +167,7 @@ body.dark {
    Try using the variable to set the background color of the body.
 */
 body {
-  background: /* [ CHANGE THIS FOR STEP 8 ] */;
+  background: var(--page-bg);
 }
 
 /* 
