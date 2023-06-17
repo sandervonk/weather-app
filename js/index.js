@@ -100,7 +100,7 @@ function init(){
   */
   getWeatherData(current_city, (r)=>{addForecastCards(r)} );
 
-  // getWeatherData(current_city, (r)=>{setCurrentWeather(r)}, "weather") <-- [ UNCOMMENT FOR STEP 15 ]
+  getWeatherData(current_city, (r)=>{setCurrentWeather(r)}, "weather")
 };
 
 // Run init() when the page is ready
@@ -472,7 +472,7 @@ function setCurrentWeather(current_weather) {
     new ErrorToast("Could not set current weather", "invalid data");
     return;
   }
-  $(document.body).toggleClass("dark", /* STEP 15 [ ADD CODE HERE ] */);
+  $(document.body).toggleClass("dark", current_weather.weather[0].icon.includes("n"));
 
   // add the current weather data to the page
   $("#current_location").text(current_weather.name+", "+current_weather.sys.country);
