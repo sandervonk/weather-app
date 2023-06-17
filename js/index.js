@@ -390,12 +390,12 @@ function addForecastCards(forecast) {
   direction, enabling us to scroll horizontally using the mouse wheel!
 */
 
-$("#forecast_card_row").on("[ CHANGE THIS FOR STEP 11 ]", (e) => {
+$("#forecast_card_row").on("wheel", (e) => {
 
   // prevent the default scroll action
   e.preventDefault();
   
-  let delta = 0; // <-- [ CHANGE THIS FOR STEP 11 ]
+  let delta = e.originalEvent.deltaY;
 
   // scroll the forecast card row horizontally
   $("#forecast_card_row").scrollLeft($("#forecast_card_row").scrollLeft() + delta);
