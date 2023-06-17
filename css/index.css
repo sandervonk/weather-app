@@ -436,8 +436,8 @@ body > header > .header_search > #city_submit {
 
     /* general style */
     border-radius: 5px;
-    background-image: url(/img/submit.png);
-    background-image: url(/img/submit.svg);
+    background-image: url(../img/submit.png);
+    background-image: url(../img/submit.svg);
     background-size: 1rem;
     background-position: center;
     background-repeat: no-repeat;
