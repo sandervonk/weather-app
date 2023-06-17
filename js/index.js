@@ -361,7 +361,7 @@ function addForecastCards(forecast) {
   */
   forecast.forEach((day) => {
 
-    /* [ WRITE YOUR CODE FOR STEP 7 HERE] */
+    $("#forecast_card_row").append(makePreviewHTML(day));
 
   });
   new SuccessToast(`Forecast for ${city_data.name} (${city_data.coord.lat}, ${city_data.coord.lon}) loaded successfully`, 4000);
