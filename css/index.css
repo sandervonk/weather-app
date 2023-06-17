@@ -123,6 +123,11 @@ body {
   overflow: hidden;
 }
 
+* {
+  box-sizing: border-box;
+  transform-origin: center;
+}
+
 /* Import fonts for util.css and development */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Montserrat:wght@400;700&family=Roboto:wght@400;500;700&display=swap");
 
@@ -132,8 +137,24 @@ body {
 
 /* Let's pick some colors for the background and elements to use later */
 :root {
-  --page-bg: radial-gradient(circle, #3ab7f7 0%, #2ba0db 45%, #0d72a6 100%); /* <-- for Step 4, you can change this if you like */
+  --card-bg: #ffffff29;
+  --temp-bg: #ffffffaa;
+  --card-solid: #ffffff;
+  --bg-appx: #1b88bf;
+  --color-text: white;
+  --color-sat: 100%;
+
+  /* EDIT BELOW FOR STEP 8 */
+  --page-bg: radial-gradient(circle, #3ab7f7 0%, #2ba0db 45%, #0d72a6 100%); /* <-- for Step 8, you can change this if you like */
 }
+
+/* for STEP 15's night style */
+body.dark {
+    --page-bg: radial-gradient(circle, #2c2d2e 0%, #1d1f20 45%, #060708 100%); 
+    --color-sat: 0%;
+}
+
+
 
 /* 
    STEP 8: Styling the body
@@ -158,7 +179,7 @@ body {
    pseudo-class. 
    
    Try adding a style for the #forecast_card_row when it is empty with the 
-   property "content" set to "Loading...". (this property is a little special, 
+   property "content" set to "Loading Forecast...". (this property is a little special, 
    only working with the :before and :after pseudo-elements, so we'll add it 
    to the :before pseudo-element)
 
@@ -177,15 +198,39 @@ body {
 /* -----------------  You can mess with it once you're done :) ------------------ */
 /* ------------------------------------------------------------------------------ */
 
+:root {
+    --anim-in: 0.25s;
+    --anim-out: .5s;
+}
+
+
 /* main page formatting */
-main, #forecast {
-    height: 100%
+body, main {
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    align-items: stretch;
+    justify-content: stretch;
+}
+main {
+    align-items: stretch;
+    justify-content: flex-end;
 }
 #forecast {
     display: flex;
     flex-flow: column;
 }
-
+#forecast_card_row:empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 240px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    font-family: "Montserrat", Roboto, sans-serif;
+    color: var(--color-text);
+    opacity: 0.5;
+}
 /* overflow scroll for cards */
 #forecast_card_row {
     overflow-x: auto;
@@ -206,7 +251,7 @@ main, #forecast {
     flex-grow: 0;
 
     /* text */
-    color: white;
+    color: var(--color-text);
     font-weight: 600;
     font-family: "Montserrat", Roboto, sans-serif;
     text-align: center;
@@ -223,23 +268,25 @@ main, #forecast {
     overflow: hidden;
 
     /* background - glass effect */
-    background: rgba(156, 222, 255, 0.12);
-    border: 1px solid rgba(156, 222, 255, 0.29);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    background: hsla(200, var(--color-sat), 81%, 0.12);
+    border: 1px solid hsla(200, var(--color-sat), 81%, 0.29);
+    box-shadow: 0 4px 30px hsla(0, 0%, 0%, 0.1);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
 
     /* transition */
-    transition: background-color 0.2s ease-out, border-color 0.2s ease-out, transform 0.3s ease-out;
+    transition: background-color ease-out, border-color ease-out, transform ease-out;
+    transition-duration: var(--anim-out);
 }
 
 #forecast_card_row > .forecast_card:hover {
     /* bluer glassmorphism */
     background: var(--card-bg);
-    border: 1px solid rgba(255, 255, 255, 0.26);
+    border: 1px solid hsla(0, 0%, 100%, 0.26);
 
     /* transform */
     transform: scale(1.05);
+    transition-duration: var(--anim-in);
 }
 
 #forecast_card_row > .forecast_card > .forecast_card__icon {
@@ -252,14 +299,21 @@ main, #forecast {
     /* events */
     pointer-events: none;
     user-select: none;
+    filter: none;
     
     /* zoom effect */
-    transition: transform 0.3s ease-out;
+    transition: transform ease-out, filter ease-out;
+    transition-duration: var(--anim-out);
     transform: scale(0.9);
 }
 
 #forecast_card_row > .forecast_card:hover > .forecast_card__icon {
     transform: scale(1.0) rotate(3deg);
+    transition-duration: var(--anim-in);
+}
+
+body.dark #forecast_card_row > .forecast_card:not(:hover) > .forecast_card__icon {
+    filter: saturate(0.7);
 }
 
 #forecast_card_row > .forecast_card p {
@@ -273,14 +327,14 @@ main, #forecast {
 }
 #forecast_card_row > .forecast_card p.forecast_card__temp {
     /* glassmorphism effect */
-    background: rgba(156, 222, 255, 0.12);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    background: hsla(200, var(--color-sat), 81%, 0.12);
+    box-shadow: 0 4px 30px hsla(0, 0%, 0%, 0.1);
     backdrop-filter: blur(6.6px);
     -webkit-backdrop-filter: blur(6.6px);
-    border: 1px solid rgba(156, 222, 255, 0.29);
+    border: 1px solid hsla(200, var(--color-sat), 81%, 0.29);
     
     /* text formatting */
-    color: white;
+    color: var(--color-text);
     font-size: 1.5rem;
     line-height: 1.5rem;
     font-weight: 700;
@@ -293,4 +347,154 @@ main, #forecast {
     padding: 6px 10px ;
     border-radius: 7px;
     
+}
+
+/* header */
+body > header {
+    /* text */
+    color: var(--color-text);
+    font-size: 1.5rem;
+    font-weight: 600;
+    font-family: Lato, Montserrat, "Open Sans", sans-serif;
+    
+
+    /* sizing */
+    height: 5rem;
+    padding: 10px;
+    width: 100%;
+
+    /* glassmorphism effect */
+
+    background: hsla(200, var(--color-sat), 81%, 0.12);
+    box-shadow: 0 4px 30px hsla(0, 0%, 0%, 0.1);
+    backdrop-filter: blur(6.6px);
+    -webkit-backdrop-filter: blur(6.6px);
+    border-bottom: 1px solid hsla(200, var(--color-sat), 81%, 0.29);
+
+    /* layout */
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: stretch;
+    justify-content: stretch;
+    z-index: 1;
+}
+
+/* header contents */
+
+body > header > div {
+    /* layout */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    height: 100%;
+}
+
+body > header > div.header_text {
+    flex-grow: 3;
+}
+body > header > div.header_search {
+    max-width: 250px;
+    padding: 0.25rem;
+    position: relative;
+}
+body > header .header_search_input {
+    /* layout */
+    width: 100%;
+    height: 100%;
+    padding: 0 1.25rem;
+    padding-right: 2.75rem;
+    max-width: unset;
+    outline: none;
+
+    /* glassmorphism */
+    border-radius: 10px;
+    box-shadow: 0 4px 30px hsla(0, 0%, 0%, 0.1);
+    backdrop-filter: blur(6.6px);
+    -webkit-backdrop-filter: blur(6.6px);
+    background: var(--card-bg);
+    border: 1px solid hsla(0, 0%, 100%, 0.26);
+
+    /* text */
+    color: #ffffffcc;
+    font-size: .75em;
+    font-weight: 600;
+    font-family: Lato, Montserrat, "Open Sans", sans-serif;
+}
+
+body > header .header_search_input::placeholder {
+    color: #ffffff40;
+}
+
+body > header > .header_search > #city_submit {
+    /* position and size */
+    position: absolute;
+    top: .75rem;
+    right: .75rem;
+    height: 1.75rem;
+    width: 1.75rem;
+
+    /* general style */
+    border-radius: 5px;
+    background-image: url(/img/submit.png);
+    background-image: url(/img/submit.svg);
+    background-size: 1rem;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    /* glassmorphism */
+    background-color: hsla(202, var(--color-sat), 98%, 0.39);
+    backdrop-filter: blur(8.3px);
+    -webkit-backdrop-filter: blur(8.3px);
+    border: 1px solid hsla(202, var(--color-sat), 98%, 0.59);
+}
+
+/* weather text */
+
+#current_weather {
+    padding: 20px;
+    font-weight: 600;
+    font-family: "Montserrat", Roboto, sans-serif;
+
+    /* center */
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+}
+#forecast {
+    height: 100%;
+}
+#forecast  #current_text {
+    color: white;
+    font-size: 1.25em;
+    text-align: center;
+}
+.temp_text::after {
+    content: "°F";
+}
+
+#current_min_temp::before {
+    content: "ꜜ ";
+}
+#current_max_temp::before {
+    content: "ꜛ ";
+}
+#current_icon {
+    width: 100%;
+    max-width: 450px;
+    max-height: 300px;
+    margin: 0 auto;
+    display: block;
+}
+
+/* small screens */
+@media (max-width: 450px) {
+    body > header > div.header_text {
+        display: none;
+    }
+    body > header > div.header_search {
+        max-width: unset;
+        width: 100%;
+    }
 }

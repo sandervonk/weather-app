@@ -66,17 +66,23 @@ import { InfoToast, SuccessToast, ErrorToast } from "/svonk-util/util.js";
 
 
 /*
-  PAGE LOAD ACTIONS
+  STEP 12: Let's make it so that the city isn't static
   ----------------------------------------------------------------------------
-  Create a new toast with the message "Hello World!" that shows for 1500ms
-  - SuccessToast is a child of Toast, with a pre-set icon
+  Now that we've built the infastructure for our app to show the forecast, 
+  let's make it so that we can change the city that we're getting the forecast
+  for!
 
-  Run the getWeatherData function with the parameters "San Francisco", and
-  a callback function to log the data to the console (for testing purposes)
+  Uncomment the line below and change your getWeatherData() call from step 10
+  to use the current_city variable as the city parameter!
 */
 
-$(document).ready(function () {
-  new SuccessToast("Hello World!", 1500); // <-- you can remove this
+// let current_city = "San Francisco"; // <-- [ UNCOMMENT FOR STEP 12 ]
+
+// 
+let city_data = {}
+
+function init(){
+  new SuccessToast("Hello World!", 1500); // <-- you can remove this if you like
   /*
      STEP 4: Let's try out our getWeatherData function!
      ----------------------------------------------------------------------------
@@ -93,7 +99,12 @@ $(document).ready(function () {
      new weather data as a parameter!
   */
   // getWeatherData( [CHANGE THIS FOR STEP 10] ); // <-- [ UNCOMMENT FOR STEP 10 ]
-});
+
+  // getWeatherData(current_city, (r)=>{setCurrentWeather(r)}, "weather") <-- [ UNCOMMENT FOR STEP 15 ]
+};
+
+// Run init() when the page is ready
+$(document).ready(init);
 
 /* ---------------------------------------------------------------------------- */
 /* -------------------------   [ START CODE BELOW ]   ------------------------- */
@@ -190,8 +201,12 @@ function getWeatherData(
       url: requestUrl, // the url to make the request to (built in STEP 1)
 
       error: null, // <-- [CHANGE THIS FOR STEP 2]
-      
-      success: (result) => { // The function to call when the request is successful
+
+    success: (result) => { // The function to call when the request is successful
+        // save the city data for further use
+        city_data = result.city;
+        // log data to console for testing (can remove if you like)
+        console.log(`%cWeather Data (${type}): `, "background:linear-gradient(45deg, #3ab7f7 0%, #2ba0db 45%, #1c89c0 100%);color:white;padding:10px 20px;font-family:Lato,sans-serif;font-weight:bold;font-size:1.5em", result);
         /*
           STEP 3: Handling the data
           --------------------------------------------------------------------------
@@ -234,20 +249,17 @@ function getWeatherData(
 
   If you like, you may edit the content of the card, and what happens when it's
   clicked. You can also add more elements to the card, or change the layout of the
-  card. However, first you must:
+  card. 
+  
+  You can find the icons in "img/weather", though they're already all set up for you, 
+  so you don't need to change them.
 
-  Fix the icon link in the function to display the correct icon for the weather;
-  right now it's using the icon code provided by the API, which is a string of two
-  numbers and then either "d" or "n". You can find the icons in the img/weather, 
-  though they're already all set up for you, so you don't need to change them.
-
-  We need to change the icon code to the icon number only (replace the "d" or "n" with
-  ""), and then add ".svg" or ".png" to the end of it. You can do this by using the 
-  .replace(find_string, replace_with) function, which takes two parameters: the string
-  to find, and the string to replace it with. You can also use the .slice(start, end)
-  function, which takes two parameters: the index to start at, and the index to end at.
-  (the number starts at index 0 and ends at 2)
-
+  We need to add ".svg" or ".png" to the end of the icon code you can use 
+  
+  ___ + ".png"
+  
+  to do this for example.
+  
   NOTE that both .png and .svg files are provided for each icon, so you can use either,
   but you must add the file extension to the end of the icon code. Just pick whichever
   you like. PNG files are bitmaps, so have pixels, while SVG files are vector images,
@@ -349,6 +361,7 @@ function addForecastCards(forecast) {
     /* [ WRITE YOUR CODE FOR STEP 7 HERE] */
 
   });
+  new SuccessToast(`Forecast for ${city_data.name} (${city_data.coord.lat}, ${city_data.coord.lon}) loaded successfully`, 4000);
 }
 
 /*
@@ -386,6 +399,84 @@ $("#forecast_card_row").on("[ CHANGE THIS FOR STEP 11 ]", (e) => {
 });
 
 
+/*
+  STEP 13: Let's make it so that the user can change the city!
+  ----------------------------------------------------------------------------
+  Now that we have a city input, let's make a way to refresh the visuals with
+  the new city by:
+  - getting the city from the input (find $("#city_input").val())
+  - set the current_city variable
+  - run the init() function to populate the screen with the new forecast
+*/
+
+function setCity() {
+  new InfoToast("Setting city to " + $("#city_input").val(), 500);
+  /* [ COMPLETE THIS FOR STEP 13 ] */
+
+}
+
+/*
+  STEP 14: Let's make the city input work!
+  ----------------------------------------------------------------------------
+  Now that we have a way to set the city, let's make it so that the user can
+  change the city by:
+  - adding a click event listener to the #city_submit button
+  - calling the setCity function when the button is clicked
+  - adding a keyup event listener to the #city_input input
+  - check if the key pressed was the enter key (e.code === "Enter") and if it
+    was, call the setCity function.
+*/
+
+$("#city_submit").click(setCity);
+$("#city_input").keyup((e) => {
+  if (" [ COMPLETE THIS FOR STEP 14 ] ") {
+    setCity();
+  }
+});
+
+
+/*
+  STEP 15: Let's show the current weather as well
+  ----------------------------------------------------------------------------
+  Let's brighten up the top half of the page by showing the current weather as
+  well as the forecast! instead of dynamically creating everything, this time
+  we'll be using jquery to set the text of the pre-existing elements, using
+  the new data we have from the current weather request!
+
+  We'll be using the same data as in STEP 3, but this time we'll be using the
+  current weather data instead of the forecast data. We'll also be using the
+  .text() function, which sets the text of an element to the value passed to it.
+
+  First, uncomment the indicated line in the definition of the function init()
+
+  Then, let's use jQuery's .toggleClass("class_name", boolean) function to
+  set the class of the body to add a class of "dark" to the body if the
+  icon is a night icon (.includes("n")), and remove it if it's a day icon!
+
+  Hint: the icon is current_weather.weather[0].icon
+*/
+
+function setCurrentWeather(current_weather) {
+  // ensure that all needed parameters are present
+  if (!current_weather) {
+    new ErrorToast("Could not set current weather", "missing data");
+    return;
+  }
+  // ensure that data is of the correct type
+  else if (typeof current_weather !== "object") {
+    new ErrorToast("Could not set current weather", "invalid data");
+    return;
+  }
+  $(document.body).toggleClass("dark", /* STEP 15 [ ADD CODE HERE ] */);
+
+  // add the current weather data to the page
+  $("#current_location").text(current_weather.name+", "+current_weather.sys.country);
+  $("#current_temp").text(current_weather.main.temp);
+  $("#current_min_temp").text(current_weather.main.temp_min);
+  $("#current_max_temp").text(current_weather.main.temp_max);
+  $("#current_icon").attr("src", "img/weather/" + current_weather.weather[0].icon + ".png");
+}
+
 
 
 
@@ -403,3 +494,4 @@ $("#forecast_card_row").on("[ CHANGE THIS FOR STEP 11 ]", (e) => {
 window.getWeatherData = getWeatherData;
 window.makePreviewHTML = makePreviewHTML;
 window.addForecastCards = addForecastCards;
+

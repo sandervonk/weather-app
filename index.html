@@ -54,12 +54,30 @@
   <!------------------------------------------------------------------------------>
 
   <body>
-    <header>
-      <!-- header content -->
+    <header class="flex-center">
+      <div class="header_text">My Cool Weather App</div>
+      <div class="header_search">
+        <input type="text" class="header_search_input" id="city_input" placeholder="San Francisco">
+        <button id="city_submit"></button>
+      </div>
     </header>
 
     <main>
       <div id="forecast">
+        <div id="current_weather" class="flex-grow">
+          <img id="current_icon" src="" alt="Current Weather" >
+          <div id="current_text">
+            <div class="current_temp">
+              <span id="current_temp" class="temp_text">Current</span>
+              &nbsp;
+              <span id="current_min_temp" class="temp_text">Min</span>
+              &nbsp;
+              <span id="current_max_temp" class="temp_text">Max</span>
+            </div>
+            <br>
+            <div id="current_location"></div>
+          </div>
+        </div>
         <!-- 
             STEP 5:
             ----------------------------------------------------------------------
