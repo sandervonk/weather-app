@@ -234,7 +234,7 @@ function getWeatherData(
           otherwise return the singular day (result).
         */
 
-        callback(/* [CHANGE THIS FOR STEP 3] */);
+        callback(type === "forecast" ? result.list : result);
       }
     }
   );
