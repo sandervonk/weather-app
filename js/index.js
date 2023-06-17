@@ -434,7 +434,7 @@ function setCity() {
 
 $("#city_submit").click(setCity);
 $("#city_input").keyup((e) => {
-  if (" [ COMPLETE THIS FOR STEP 14 ] ") {
+  if (e.code === "Enter") {
     setCity();
   }
 });
