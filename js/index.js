@@ -76,7 +76,7 @@ import { InfoToast, SuccessToast, ErrorToast } from "/svonk-util/util.js";
   to use the current_city variable as the city parameter!
 */
 
-// let current_city = "San Francisco"; // <-- [ UNCOMMENT FOR STEP 12 ]
+let current_city = "San Francisco";
 
 // 
 let city_data = {}
@@ -98,7 +98,7 @@ function init(){
      the city as "San Francisco", and a callback to addForecastCards with the
      new weather data as a parameter!
   */
-  getWeatherData("San Francisco", (r)=>{addForecastCards(r)} );
+  getWeatherData(current_city, (r)=>{addForecastCards(r)} );
 
   // getWeatherData(current_city, (r)=>{setCurrentWeather(r)}, "weather") <-- [ UNCOMMENT FOR STEP 15 ]
 };
