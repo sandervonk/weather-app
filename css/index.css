@@ -186,8 +186,8 @@ body {
    Change the blanks, including the ...s, to make it work.
 */
 
-#forecast_card_row:/* ... */::/* ... */ {
-  /* [ ADD THE PROPERTY FROM STEP 9 ] */
+#forecast_card_row:empty::before {
+    content: "Loading Forecast...";
 }/* 
 
 
