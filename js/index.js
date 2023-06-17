@@ -297,7 +297,7 @@ function makePreviewHTML(day_raw) {
     high: day_raw.main.temp_max,
     low: day_raw.main.temp_min,
     weather: day_raw.weather[0],
-    icon: day_raw.weather[0].icon // <-- [ CHANGE THIS FOR STEP 6 ]
+    icon: day_raw.weather[0].icon + ".png"
   }
   // reformat the date to HH AM/PM MM/DD
   day.date = day.date.split(", ").reverse().join(" ")
