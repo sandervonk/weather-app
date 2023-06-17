@@ -89,7 +89,7 @@ function init(){
      We'll be using the city "San Francisco" and a callback that prints the data
      to the console. We'll use the default parameters for type and units
   */
-  getWeatherData(/* [CHANGE THIS FOR STEP 4] */);
+  getWeatherData("San Francisco", (r)=>{console.log(r)});
 
   /*
      STEP 10: Let's run our new functions!
