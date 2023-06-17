@@ -200,7 +200,10 @@ function getWeatherData(
     
       url: requestUrl, // the url to make the request to (built in STEP 1)
 
-      error: null, // <-- [CHANGE THIS FOR STEP 2]
+      error: (err) => {
+        // Completed STEP 2
+        new ErrorToast("Could not fetch data", err?.responseJSON?.message || err?.status || err || "unknown error");
+      },
 
     success: (result) => { // The function to call when the request is successful
         // save the city data for further use
