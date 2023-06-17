@@ -89,7 +89,7 @@ function init(){
      We'll be using the city "San Francisco" and a callback that prints the data
      to the console. We'll use the default parameters for type and units
   */
-  getWeatherData("San Francisco", (r)=>{console.log(r)});
+  // getWeatherData("San Francisco", (r)=>{console.log(r)});
 
   /*
      STEP 10: Let's run our new functions!
@@ -98,7 +98,7 @@ function init(){
      the city as "San Francisco", and a callback to addForecastCards with the
      new weather data as a parameter!
   */
-  // getWeatherData( [CHANGE THIS FOR STEP 10] ); // <-- [ UNCOMMENT FOR STEP 10 ]
+  getWeatherData("San Francisco", (r)=>{addForecastCards(r)} );
 
   // getWeatherData(current_city, (r)=>{setCurrentWeather(r)}, "weather") <-- [ UNCOMMENT FOR STEP 15 ]
 };
