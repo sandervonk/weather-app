@@ -42,7 +42,7 @@
   will allow us to display messages to the user. We can import them like so: 
 */
 
-import { InfoToast, SuccessToast, ErrorToast } from "/svonk-util/util.js";
+import { InfoToast, SuccessToast, ErrorToast } from "../svonk-util/util.js";
 
 /* 
   FUNCTION STRUCTURE
@@ -112,16 +112,16 @@ $(document).ready(init);
 
 
 // API key for OpenWeatherMap
-const API_KEY = "[ find yours at https://home.openweathermap.org/api_keys ]";
+const API_KEY = "384f5f36aa137ad1e88da99c56ace135";
 // default units for the weather data
-const default_unit = "standard";
+const default_unit = "imperial";
 // function to get the unit symbol for a unit
 const getUnitSymbol = (unit) => {
   switch (unit) {
     case "imperial":
-      return "${getUnitSymbol(default_unit)}F";
+      return "°F";
     case "metric":
-      return "${getUnitSymbol(default_unit)}C";
+      return "°C";
     default:
       return " K";
   }
