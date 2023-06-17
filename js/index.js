@@ -76,7 +76,7 @@ import { InfoToast, SuccessToast, ErrorToast } from "../svonk-util/util.js";
   to use the current_city variable as the city parameter!
 */
 
-// let current_city = "San Francisco"; // <-- [ UNCOMMENT FOR STEP 12 ]
+let current_city = "San Francisco"; 
 
 // 
 let city_data = {}
@@ -89,7 +89,7 @@ function init(){
      We'll be using the city "San Francisco" and a callback that prints the data
      to the console. We'll use the default parameters for type and units
   */
-  getWeatherData(/* [CHANGE THIS FOR STEP 4] */);
+  // getWeatherData("San Francisco", (r) => { console.log(r)});
 
   /*
      STEP 10: Let's run our new functions!
@@ -98,9 +98,9 @@ function init(){
      the city as "San Francisco", and a callback to addForecastCards with the
      new weather data as a parameter!
   */
-  // getWeatherData( [CHANGE THIS FOR STEP 10] ); // <-- [ UNCOMMENT FOR STEP 10 ]
+  getWeatherData(current_city, (r) => { addForecastCards(r)});
 
-  // getWeatherData(current_city, (r)=>{setCurrentWeather(r)}, "weather") <-- [ UNCOMMENT FOR STEP 15 ]
+  getWeatherData(current_city, (r) => { setCurrentWeather(r) }, "weather");
 };
 
 // Run init() when the page is ready
@@ -112,7 +112,7 @@ $(document).ready(init);
 
 
 // API key for OpenWeatherMap
-const API_KEY = "[ find yours at https://home.openweathermap.org/api_keys ]";
+const API_KEY = "384f5f36aa137ad1e88da99c56ace135"; 
 // default units for the weather data
 const default_unit = "imperial"; // can be "imperial", "metric", or "standard"
 // function to get the unit symbol for a unit
@@ -166,7 +166,7 @@ function getWeatherData(
   
   let requestUrl = "https://api.openweathermap.org/data/2.5/"
   
-  requestUrl += `[STEP 1: ADD YOUR TEMPLATE LITERAL STRING CONTENTS HERE]`;
+  requestUrl += `${type}?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=${units}`;
 
   /*
     STEP 2: Making the request using jQuery's AJAX function
@@ -195,14 +195,15 @@ function getWeatherData(
     called optional chaining, and is a shorthand for checking if a property is defined
     before accessing it, which allows us to avoid errors if the property is undefined.
   */
-
   $.getJSON({
     
       url: requestUrl, // the url to make the request to (built in STEP 1)
 
-      error: null, // <-- [CHANGE THIS FOR STEP 2]
+      error: (err) => {  
+        new ErrorToast("Could not fetch data", err?.responseJSON?.message || err?.status || err || "unknown error")
+      }, // <-- [CHANGE THIS FOR STEP 2]
 
-    success: (result) => { // The function to call when the request is successful
+      success: (result) => { // The function to call when the request is successful
         // save the city data for further use
         city_data = result.city;
         // log data to console for testing (can remove if you like)
@@ -231,7 +232,7 @@ function getWeatherData(
           otherwise return the singular day (result).
         */
 
-        callback(/* [CHANGE THIS FOR STEP 3] */);
+        callback((type === "forecast") ? result.list : result);
       }
     }
   );
@@ -294,7 +295,7 @@ function makePreviewHTML(day_raw) {
     high: day_raw.main.temp_max,
     low: day_raw.main.temp_min,
     weather: day_raw.weather[0],
-    icon: day_raw.weather[0].icon // <-- [ CHANGE THIS FOR STEP 6 ]
+    icon: day_raw.weather[0].icon + ".png" // <-- [ CHANGE THIS FOR STEP 6 ]
   }
   // reformat the date to HH AM/PM MM/DD
   day.date = day.date.split(", ").reverse().join(" ")
@@ -339,7 +340,8 @@ function addForecastCards(forecast) {
     return;
   }
   // clear the forecast card row
-  $(".forecast_card_row").html("");
+  let $row = $("#forecast_card_row")
+  $row.html("");
     /*
     STEP 7: Create and display forecast cards
     -----------------------------------------------------------------------------
@@ -358,7 +360,7 @@ function addForecastCards(forecast) {
   */
   forecast.forEach((day) => {
 
-    /* [ WRITE YOUR CODE FOR STEP 7 HERE] */
+    $row.append(makePreviewHTML(day))
 
   });
   new SuccessToast(`Forecast for ${city_data.name} (${city_data.coord.lat}, ${city_data.coord.lon}) loaded successfully`, 4000);
@@ -379,7 +381,7 @@ function addForecastCards(forecast) {
   Right now, our delta (change in scroll position) is null, so the scrollLeft just 
   stays the same.
 
-  Set the event that should trigger this listener ("scroll") to get started.
+  Set the event that should trigger this listener ("wheel") to get started.
 
   Then change the function to use the e.originalEvent.deltaY property, which is 
   the change in scroll position in the y direction (vertical). This will make it so 
@@ -387,12 +389,12 @@ function addForecastCards(forecast) {
   direction, enabling us to scroll horizontally using the mouse wheel!
 */
 
-$("#forecast_card_row").on("[ CHANGE THIS FOR STEP 11 ]", (e) => {
+$("#forecast_card_row").on("wheel", (e) => {
 
   // prevent the default scroll action
   e.preventDefault();
   
-  let delta = 0; // <-- [ CHANGE THIS FOR STEP 11 ]
+  let delta = e.originalEvent.deltaY;
 
   // scroll the forecast card row horizontally
   $("#forecast_card_row").scrollLeft($("#forecast_card_row").scrollLeft() + delta);
@@ -411,7 +413,8 @@ $("#forecast_card_row").on("[ CHANGE THIS FOR STEP 11 ]", (e) => {
 
 function setCity() {
   new InfoToast("Setting city to " + $("#city_input").val(), 500);
-  /* [ COMPLETE THIS FOR STEP 13 ] */
+  current_city = $("#city_input").val();
+  init()
 
 }
 
@@ -429,7 +432,7 @@ function setCity() {
 
 $("#city_submit").click(setCity);
 $("#city_input").keyup((e) => {
-  if (" [ COMPLETE THIS FOR STEP 14 ] ") {
+  if (e.code === "Enter") {
     setCity();
   }
 });
@@ -467,7 +470,7 @@ function setCurrentWeather(current_weather) {
     new ErrorToast("Could not set current weather", "invalid data");
     return;
   }
-  $(document.body).toggleClass("dark", /* STEP 15 [ ADD CODE HERE ] */);
+  $(document.body).toggleClass("dark", current_weather.weather[0].icon.includes("n"));
 
   // add the current weather data to the page
   $("#current_location").text(current_weather.name+", "+current_weather.sys.country);
