@@ -414,8 +414,10 @@ $("#forecast_card_row").on("wheel", (e) => {
 
 function setCity() {
   new InfoToast("Setting city to " + $("#city_input").val(), 500);
-  /* [ COMPLETE THIS FOR STEP 13 ] */
-
+  
+  // Completed STEP 13
+  current_city = $("#city_input").val();
+  init();
 }
 
 /*
